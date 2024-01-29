@@ -1,4 +1,4 @@
-package com.reliabletxt
+package reliableKt.reliableTXT
 
 import java.nio.charset.Charset
 import java.nio.charset.StandardCharsets

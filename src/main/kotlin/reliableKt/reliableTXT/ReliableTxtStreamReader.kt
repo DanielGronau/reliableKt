@@ -1,4 +1,4 @@
-package com.reliabletxt
+package reliableKt.reliableTXT
 
 import java.io.BufferedReader
 import java.io.IOException

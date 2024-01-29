@@ -1,8 +1,10 @@
-package com.reliabletxt
+package reliableKt.reliableTXT
 
-import com.reliabletxt.Assert.equals
+import org.assertj.core.api.Assertions.assertThat
+import org.junit.jupiter.api.AfterAll
 import java.io.IOException
 import java.nio.file.Files
+import java.nio.file.Path
 import java.nio.file.Paths
 import kotlin.test.Test
 
@@ -42,14 +44,14 @@ class ReliableTxtStreamWriterTest {
         deleteAppendFile(filePath)
         ReliableTxtStreamWriter(filePath, firstEncoding, true).use { writer ->
             writer.writeLine("Line 1")
-            equals(writer.encoding, firstEncoding)
+            assertThat(writer.encoding).isEqualTo(firstEncoding)
         }
-        load(filePath, "Line 1", firstEncoding)
+        checkLoad(filePath, "Line 1", firstEncoding)
         ReliableTxtStreamWriter(filePath, secondEncoding, true).use { writer ->
             writer.writeLine("Line 2")
-            equals(writer.encoding, firstEncoding)
+            assertThat(writer.encoding).isEqualTo(firstEncoding)
         }
-        load(filePath, "Line 1\nLine 2", firstEncoding)
+        checkLoad(filePath, "Line 1\nLine 2", firstEncoding)
     }
 
     private fun deleteAppendFile(filePath: String) {
@@ -75,25 +77,25 @@ class ReliableTxtStreamWriterTest {
         ReliableTxtStreamWriter(filePath, encoding, true).use { writer ->
             writer.writeLine("Line 1")
         }
-        load(filePath, "Line 1", encoding)
+        checkLoad(filePath, "Line 1", encoding)
     }
 
     @Test
     fun writeLine() {
-        writeLine(ReliableTxtEncoding.UTF_8)
-        writeLine(ReliableTxtEncoding.UTF_16)
-        writeLine(ReliableTxtEncoding.UTF_16_REVERSE)
-        writeLine(ReliableTxtEncoding.UTF_32)
+        checkWriteLine(ReliableTxtEncoding.UTF_8)
+        checkWriteLine(ReliableTxtEncoding.UTF_16)
+        checkWriteLine(ReliableTxtEncoding.UTF_16_REVERSE)
+        checkWriteLine(ReliableTxtEncoding.UTF_32)
     }
 
-    private fun writeLine(encoding: ReliableTxtEncoding) {
+    private fun checkWriteLine(encoding: ReliableTxtEncoding) {
         val filePath = "Test.txt"
         ReliableTxtStreamWriter(filePath, encoding).use { writer ->
             for (i in 1..3) {
                 writer.writeLine("Line $i")
             }
         }
-        load(filePath, "Line 1\nLine 2\nLine 3", encoding)
+        checkLoad(filePath, "Line 1\nLine 2\nLine 3", encoding)
     }
 
     @Test
@@ -106,12 +108,21 @@ class ReliableTxtStreamWriterTest {
                 "Line 3"
             )
         }
-        load(filePath, "Line 1\nLine 2\nLine 3", ReliableTxtEncoding.UTF_8)
+        checkLoad(filePath, "Line 1\nLine 2\nLine 3", ReliableTxtEncoding.UTF_8)
     }
 
-    private fun load(filePath: String, text: String, encoding: ReliableTxtEncoding) {
-        val (text1, encoding1) = ReliableTxtDocument.load(filePath)
-        equals(encoding1, encoding)
-        equals(text1, text)
+    private fun checkLoad(filePath: String, expectedText: String, expectedEncoding: ReliableTxtEncoding) {
+        val (text, encoding) = ReliableTxtDocument.load(filePath)
+        assertThat(encoding).isEqualTo(expectedEncoding)
+        assertThat(text).isEqualTo(expectedText)
+    }
+
+    companion object {
+        @JvmStatic
+        @AfterAll
+        fun cleanup() {
+            Files.deleteIfExists(Path.of("Test.txt"))
+            Files.deleteIfExists(Path.of("Append.txt"))
+        }
     }
 }

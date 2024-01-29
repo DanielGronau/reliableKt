@@ -1,8 +1,8 @@
-package com.reliabletxt
+package reliableKt.reliableTXT
 
-import com.reliabletxt.ReliableTxtDecoder.decode
-import com.reliabletxt.ReliableTxtEncoder.encode
-import com.reliabletxt.ReliableTxtLines.split
+import reliableKt.reliableTXT.ReliableTxtDecoder.decode
+import reliableKt.reliableTXT.ReliableTxtEncoder.encode
+import reliableKt.reliableTXT.ReliableTxtLines.split
 import java.io.IOException
 import java.nio.file.Files
 import java.nio.file.Paths

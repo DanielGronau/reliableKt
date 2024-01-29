@@ -1,4 +1,4 @@
-package com.reliabletxt
+package reliableKt.reliableTXT
 
 import java.io.FileInputStream
 import java.io.IOException

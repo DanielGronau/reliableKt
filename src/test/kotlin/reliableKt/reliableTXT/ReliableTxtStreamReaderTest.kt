@@ -1,6 +1,9 @@
-package com.reliabletxt
+package reliableKt.reliableTXT
 
-import com.reliabletxt.Assert.equals
+import org.assertj.core.api.Assertions.assertThat
+import org.junit.jupiter.api.AfterAll
+import java.nio.file.Files
+import java.nio.file.Path
 import kotlin.test.Test
 
 class ReliableTxtStreamReaderTest {
@@ -16,14 +19,22 @@ class ReliableTxtStreamReaderTest {
         val filePath = "Test.txt"
         ReliableTxtDocument.save("Line 1\nLine 2\nLine 3", encoding, filePath)
         ReliableTxtStreamReader(filePath).use { reader ->
-            equals(reader.encoding, encoding)
+            assertThat(reader.encoding).isEqualTo(encoding)
             var line: String?
             var lineCount = 0
             while (reader.readLine().also { line = it } != null) {
                 lineCount++
-                equals(line, "Line $lineCount")
+                assertThat(line).isEqualTo("Line $lineCount")
             }
-            equals(lineCount.toLong(), 3)
+            assertThat(lineCount).isEqualTo(3)
+        }
+    }
+
+    companion object {
+        @JvmStatic
+        @AfterAll
+        fun cleanup() {
+            Files.deleteIfExists(Path.of("Test.txt"))
         }
     }
 }

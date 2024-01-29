@@ -1,4 +1,4 @@
-package com.reliabletxt
+package reliableKt.reliableTXT
 
 data class LineInfo(val lineIndex: Int, val linePosition: Int)
 
