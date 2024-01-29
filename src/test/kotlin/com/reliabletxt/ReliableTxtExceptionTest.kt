@@ -1,6 +1,6 @@
-package com.stenway.reliabletxt
+package com.reliabletxt
 
-import com.stenway.reliabletxt.Assert.equals
+import com.reliabletxt.Assert.equals
 import kotlin.test.Test
 
 class ReliableTxtExceptionTest {

@@ -1,8 +1,8 @@
-package com.stenway.reliabletxt
+package com.reliabletxt
 
-import com.stenway.reliabletxt.ReliableTxtDecoder.decode
-import com.stenway.reliabletxt.ReliableTxtEncoder.encode
-import com.stenway.reliabletxt.ReliableTxtLines.split
+import com.reliabletxt.ReliableTxtDecoder.decode
+import com.reliabletxt.ReliableTxtEncoder.encode
+import com.reliabletxt.ReliableTxtLines.split
 import java.io.IOException
 import java.nio.file.Files
 import java.nio.file.Paths

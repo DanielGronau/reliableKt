@@ -1,8 +1,8 @@
-package com.stenway.reliabletxt
+package com.reliabletxt
 
-import com.stenway.reliabletxt.Assert.equals
-import com.stenway.reliabletxt.ReliableTxtLines.join
-import com.stenway.reliabletxt.ReliableTxtLines.split
+import com.reliabletxt.Assert.equals
+import com.reliabletxt.ReliableTxtLines.join
+import com.reliabletxt.ReliableTxtLines.split
 import java.util.*
 import kotlin.test.Test
 

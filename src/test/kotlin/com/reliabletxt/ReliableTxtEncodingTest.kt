@@ -1,6 +1,6 @@
-package com.stenway.reliabletxt
+package com.reliabletxt
 
-import com.stenway.reliabletxt.Assert.equals
+import com.reliabletxt.Assert.equals
 import java.nio.charset.Charset
 import java.nio.charset.StandardCharsets
 import kotlin.test.Test

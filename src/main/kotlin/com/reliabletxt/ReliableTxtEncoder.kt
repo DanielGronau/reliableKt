@@ -12,8 +12,7 @@ object ReliableTxtEncoder {
         return try {
             val byteBuffer = encoder.encode(charBuffer)
             val numBytes = byteBuffer.limit()
-            ByteArray(numBytes)
-                .also { byteBuffer[it] }
+            ByteArray(numBytes).also { byteBuffer[it] }
         } catch (e: Exception) {
             throw ReliableTxtException("Text contains invalid characters")
         }

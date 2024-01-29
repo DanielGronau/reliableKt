@@ -1,4 +1,4 @@
-package com.stenway.reliabletxt
+package com.reliabletxt
 
 import java.io.FileInputStream
 import java.io.IOException

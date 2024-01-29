@@ -1,7 +1,7 @@
-package com.stenway.reliabletxt
+package com.reliabletxt
 
-import com.stenway.reliabletxt.Assert.equals
-import com.stenway.reliabletxt.ReliableTxtEncoder.encode
+import com.reliabletxt.Assert.equals
+import com.reliabletxt.ReliableTxtEncoder.encode
 import org.junit.jupiter.api.Assertions.assertThrows
 import kotlin.test.Test
 

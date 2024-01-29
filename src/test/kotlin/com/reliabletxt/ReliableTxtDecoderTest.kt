@@ -1,7 +1,7 @@
-package com.stenway.reliabletxt
+package com.reliabletxt
 
-import com.stenway.reliabletxt.Assert.equals
-import com.stenway.reliabletxt.ReliableTxtDecoder.decode
+import com.reliabletxt.Assert.equals
+import com.reliabletxt.ReliableTxtDecoder.decode
 import org.junit.jupiter.api.Assertions.assertThrows
 import java.nio.file.Files
 import java.nio.file.Paths
@@ -223,7 +223,7 @@ class ReliableTxtDecoderTest {
         expectedMessage: String
     ) {
         try {
-            val decoderResult = decode(bytes)
+            decode(bytes)
         } catch (e: ReliableTxtException) {
             equals(e.message, expectedMessage)
             return

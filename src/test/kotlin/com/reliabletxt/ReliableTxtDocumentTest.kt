@@ -1,6 +1,6 @@
-package com.stenway.reliabletxt
+package com.reliabletxt
 
-import com.stenway.reliabletxt.Assert.equals
+import com.reliabletxt.Assert.equals
 import java.io.IOException
 import java.util.*
 import kotlin.test.Test

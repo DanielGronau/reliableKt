@@ -1,6 +1,6 @@
-package com.stenway.reliabletxt
+package com.reliabletxt
 
-import com.stenway.reliabletxt.Assert.equals
+import com.reliabletxt.Assert.equals
 import java.io.IOException
 import java.nio.file.Files
 import java.nio.file.Paths
@@ -11,7 +11,7 @@ class ReliableTxtStreamWriterTest {
     fun constructor() {
         val filePath = "Test.txt"
         ReliableTxtStreamWriter(filePath).use { }
-        ReliableTxtStreamWriter(filePath, true).use { }
+        ReliableTxtStreamWriter(filePath, append = true).use { }
     }
 
     @Test

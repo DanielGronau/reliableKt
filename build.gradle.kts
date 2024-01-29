@@ -1,9 +1,8 @@
 plugins {
-    kotlin("jvm") version "1.9.0"
-    application
+    kotlin("jvm") version "1.9.20"
 }
 
-group = "com.ecolytiq"
+group = "com.reliableKt"
 version = "1.0-SNAPSHOT"
 
 repositories {
@@ -12,16 +11,13 @@ repositories {
 
 dependencies {
     testImplementation(kotlin("test"))
+    testImplementation("org.assertj:assertj-core:3.23.1")
 }
 
-tasks.test {
+tasks.withType<Test> {
     useJUnitPlatform()
 }
 
 kotlin {
-    jvmToolchain(8)
-}
-
-application {
-    mainClass.set("MainKt")
+    jvmToolchain(11)
 }

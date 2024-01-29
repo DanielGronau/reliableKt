@@ -1,4 +1,4 @@
-package com.stenway.reliabletxt
+package com.reliabletxt
 
 import java.io.BufferedWriter
 import java.io.IOException
@@ -12,12 +12,10 @@ class ReliableTxtStreamWriter @JvmOverloads constructor(
     encoding: ReliableTxtEncoding? = null,
     append: Boolean = false
 ) : AutoCloseable {
-    private val encoding: ReliableTxtEncoding
+    val encoding: ReliableTxtEncoding
     private var writer: BufferedWriter
     private var isFirstLine: Boolean = true
     private val appendMode: Boolean
-
-    constructor(filePath: String, append: Boolean) : this(filePath, null, append)
 
     init {
         var _encoding = encoding

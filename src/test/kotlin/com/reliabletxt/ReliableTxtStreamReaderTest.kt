@@ -1,6 +1,6 @@
-package com.stenway.reliabletxt
+package com.reliabletxt
 
-import com.stenway.reliabletxt.Assert.equals
+import com.reliabletxt.Assert.equals
 import kotlin.test.Test
 
 class ReliableTxtStreamReaderTest {
@@ -17,7 +17,7 @@ class ReliableTxtStreamReaderTest {
         ReliableTxtDocument.save("Line 1\nLine 2\nLine 3", encoding, filePath)
         ReliableTxtStreamReader(filePath).use { reader ->
             equals(reader.encoding, encoding)
-            var line: String? = null
+            var line: String?
             var lineCount = 0
             while (reader.readLine().also { line = it } != null) {
                 lineCount++

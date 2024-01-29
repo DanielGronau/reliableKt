@@ -1,10 +1,10 @@
-package com.stenway.reliabletxt
+package com.reliabletxt
 
 data class LineInfo(val lineIndex: Int, val linePosition: Int)
 
 class ReliableTxtCharIterator(text: String) {
-    val chars = text.codePoints().toArray()
-    var index = 0
+    private val chars = text.codePoints().toArray()
+    private var index = 0
 
     fun getText(): String = String(chars, 0, chars.size)
 
