@@ -15,7 +15,7 @@ class ReliableTxtStreamWriter @JvmOverloads constructor(
     val encoding: ReliableTxtEncoding
     private var writer: BufferedWriter
     private var isFirstLine: Boolean = true
-    private val appendMode: Boolean
+    val appendMode: Boolean
 
     init {
         var _encoding = encoding

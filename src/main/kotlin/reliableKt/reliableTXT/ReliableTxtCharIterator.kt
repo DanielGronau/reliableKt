@@ -2,9 +2,9 @@ package reliableKt.reliableTXT
 
 data class LineInfo(val lineIndex: Int, val linePosition: Int)
 
-class ReliableTxtCharIterator(text: String) {
-    private val chars = text.codePoints().toArray()
-    private var index = 0
+open class ReliableTxtCharIterator(text: String) {
+    protected val chars = text.codePoints().toArray()
+    protected var index = 0
 
     fun getText(): String = String(chars, 0, chars.size)
 
@@ -32,7 +32,7 @@ class ReliableTxtCharIterator(text: String) {
     fun tryReadChar(c: Int): Boolean = when {
         !isChar(c) -> false
         else -> {
-            index++
+            ++index
             true
         }
     }
