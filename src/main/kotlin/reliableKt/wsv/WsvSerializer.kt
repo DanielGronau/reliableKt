@@ -10,7 +10,7 @@ object WsvSerializer {
             c == '\n' || isWhitespace(c.code) || c == '"' || c == '#'
         }
 
-    fun serializeValue(sb: StringBuilder, value: String?) {
+    private fun serializeValue(sb: StringBuilder, value: String?) {
         when {
             value == null -> sb.append('-')
             value.isEmpty() -> sb.append("\"\"")
@@ -71,26 +71,22 @@ object WsvSerializer {
         sb: StringBuilder,
         line: WsvLine
     ) {
-        line.values?.let { values ->
-            var isFollowingValue = false
-            for (value in values) {
-                when {
-                    isFollowingValue -> sb.append(' ')
-                    else -> isFollowingValue = true
-                }
-                serializeValue(sb, value)
+        var isFollowingValue = false
+        line.values.forEach { value ->
+            when {
+                isFollowingValue -> sb.append(' ')
+                else -> isFollowingValue = true
             }
-            if (line.comment != null && values.isNotEmpty()) {
-                sb.append(' ')
-            }
+            serializeValue(sb, value)
+        }
+        if (line.comment != null && line.values.isNotEmpty()) {
+            sb.append(' ')
         }
     }
 
     fun serializeLine(sb: StringBuilder, line: WsvLine) {
         when {
-            line.whitespaces.isNotEmpty() ->
-                serializeValuesWithWhitespace(sb, line)
-
+            line.whitespaces.isNotEmpty() -> serializeValuesWithWhitespace(sb, line)
             else -> serializeValuesWithoutWhitespace(sb, line)
 
         }
@@ -101,39 +97,43 @@ object WsvSerializer {
     }
 
     fun serializeLine(line: WsvLine): String =
-        StringBuilder().also { sb ->
-            serializeLine(sb, line)
-        }.toString()
+        with(StringBuilder()) {
+            serializeLine(this, line)
+            toString()
+        }
 
     fun serializeDocument(document: WsvDocument): String =
-        StringBuilder().also { sb ->
+        with(StringBuilder()) {
             var isFirstLine = true
             for (line in document.lines) {
                 when {
-                    !isFirstLine -> sb.append('\n')
+                    !isFirstLine -> append('\n')
                     else -> isFirstLine = false
                 }
-                serializeLine(sb, line)
+                serializeLine(this, line)
             }
-        }.toString()
+            toString()
+        }
 
 
     fun serializeLineNonPreserving(line: WsvLine): String =
-        StringBuilder().also {
-            serializeLine(it, line.values ?: arrayOf())
-        }.toString()
+        with(StringBuilder()) {
+            serializeLine(this, line.values)
+            toString()
+        }
 
     fun serializeDocumentNonPreserving(document: WsvDocument): String =
-        StringBuilder().also { sb ->
+        with(StringBuilder()) {
             var isFirstLine = true
             for (line in document.lines) {
                 when {
-                    !isFirstLine -> sb.append('\n')
+                    !isFirstLine -> append('\n')
                     else -> isFirstLine = false
                 }
-                serializeLine(sb, line.values)
+                serializeLine(this, line.values)
             }
-        }.toString()
+            toString()
+        }
 
     fun serializeLine(sb: StringBuilder, line: Array<String?>) {
         line.forEachIndexed { index, value ->
@@ -145,18 +145,20 @@ object WsvSerializer {
     }
 
     fun serializeLine(vararg line: String?): String =
-        StringBuilder().also {
-            serializeLine(it, arrayOf(*line))
-        }.toString()
+        with(StringBuilder()) {
+            serializeLine(this, arrayOf(*line))
+            toString()
+        }
 
     fun serializeDocument(lines: Array<Array<String?>>): String =
-        StringBuilder().also { sb ->
+        with(StringBuilder()) {
             lines.forEachIndexed { index, line ->
                 if (index > 0) {
-                    sb.append('\n')
+                    append('\n')
                 }
-                serializeLine(sb, line)
+                serializeLine(this, line)
             }
-        }.toString()
+            toString()
+        }
 
 }

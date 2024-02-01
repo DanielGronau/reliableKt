@@ -30,9 +30,9 @@ class WsvLine(
         this.comment = comment
     }
 
-    override fun toString(): String {
-        return toString(true)
-    }
+    override fun toString(): String =
+       toString(true)
+
 
     fun toString(preserveWhitespaceAndComment: Boolean): String = when {
         preserveWhitespaceAndComment -> WsvSerializer.serializeLine(this)
@@ -42,8 +42,8 @@ class WsvLine(
     companion object {
 
         private fun validateWhitespaces(vararg whitespaces: String?) {
-            for (whitespace in whitespaces) {
-                require(whitespace.isNullOrEmpty() || WsvString.isWhitespace(whitespace)) {
+            whitespaces.forEach { whitespace ->
+                        require(whitespace.isNullOrEmpty() || whitespace.isWhitespace()) {
                     "Whitespace value contains non whitespace character or line feed" }
             }
         }

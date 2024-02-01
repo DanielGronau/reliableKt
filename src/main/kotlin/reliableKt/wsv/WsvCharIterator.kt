@@ -7,14 +7,13 @@ import reliableKt.wsv.WsvChar.isWhitespace
 internal class WsvCharIterator(text: String?) : ReliableTxtCharIterator(text!!) {
     private val sb = StringBuilder()
 
-    val isWhitespace: Boolean
-        get() = if (isEndOfText()) false else isWhitespace(chars.get(index))
+    private fun isWhitespace() = !isEndOfText() && isWhitespace(chars[index])
 
     fun readCommentText(): String {
         val startIndex: Int = index
         while (true) {
             if (isEndOfText()) break
-            if (chars.get(index) == '\n'.code) break
+            if (chars[index] == '\n'.code) break
             index++
         }
         return String(chars, startIndex, index - startIndex)
@@ -23,7 +22,7 @@ internal class WsvCharIterator(text: String?) : ReliableTxtCharIterator(text!!) 
     fun skipCommentText() {
         while (true) {
             if (isEndOfText()) break
-            if (chars.get(index) == '\n'.code) break
+            if (chars[index] == '\n'.code) break
             index++
         }
     }
@@ -32,7 +31,7 @@ internal class WsvCharIterator(text: String?) : ReliableTxtCharIterator(text!!) 
         val startIndex: Int = index
         while (true) {
             if (isEndOfText()) break
-            val c: Int = chars.get(index)
+            val c: Int = chars[index]
             if (c == '\n'.code) break
             if (!isWhitespace(c)) break
             index++
@@ -44,7 +43,7 @@ internal class WsvCharIterator(text: String?) : ReliableTxtCharIterator(text!!) 
         val startIndex: Int = index
         while (true) {
             if (isEndOfText()) break
-            val c: Int = chars.get(index)
+            val c: Int = chars[index]
             if (c == '\n'.code) break
             if (!isWhitespace(c)) break
             index++
@@ -58,20 +57,19 @@ internal class WsvCharIterator(text: String?) : ReliableTxtCharIterator(text!!) 
             if (isEndOfText() || isChar('\n'.code)) {
                 throw getException("String not closed")
             }
-            val c: Int = chars.get(index)
+            val c: Int = chars[index]
             if (c == '"'.code) {
                 index++
-                if (tryReadChar('"'.code)) {
-                    sb.append('"')
-                } else if (tryReadChar('/'.code)) {
-                    if (!tryReadChar('"'.code)) {
+                when {
+                    tryReadChar('"'.code) -> sb.append('"')
+                    tryReadChar('/'.code) -> if (!tryReadChar('"'.code)) {
                         throw getException("Invalid string line break")
+                    } else {
+                        sb.append('\n')
                     }
-                    sb.append('\n')
-                } else if (isWhitespace || isChar('\n'.code) || isChar('#'.code) || isEndOfText()) {
-                    break
-                } else {
-                    throw getException("Invalid character after string")
+
+                    isWhitespace() || isChar('\n'.code) || isChar('#'.code) || isEndOfText() -> break
+                    else -> throw getException("Invalid character after string")
                 }
             } else {
                 sb.appendCodePoint(c)
@@ -87,7 +85,7 @@ internal class WsvCharIterator(text: String?) : ReliableTxtCharIterator(text!!) 
             if (isEndOfText()) {
                 break
             }
-            val c: Int = chars.get(index)
+            val c: Int = chars[index]
             if (isWhitespace(c) || c == '\n'.code || c == '#'.code) {
                 break
             }
@@ -102,8 +100,9 @@ internal class WsvCharIterator(text: String?) : ReliableTxtCharIterator(text!!) 
         return String(chars, startIndex, index - startIndex)
     }
 
-    fun getException(message: String): WsvParserException {
-        val (lineIndex, linePosition) = getLineInfo()
-        return WsvParserException(index, lineIndex, linePosition, message)
-    }
+    fun getException(message: String): WsvParserException =
+        getLineInfo()
+            .let { (lineIndex, linePosition) ->
+                WsvParserException(index, lineIndex, linePosition, message)
+            }
 }

@@ -7,14 +7,14 @@ class WsvStringTest {
     @Test
     fun isWhitespace() {
         val wsCodePoints: IntArray = WsvChar.whitespaceCodePoints
-        assertThat(WsvString.isWhitespace(String(wsCodePoints, 0, wsCodePoints.size))).isTrue()
+        assertThat(String(wsCodePoints, 0, wsCodePoints.size).isWhitespace()).isTrue()
     }
 
     @Test
     fun isWhitespace_NonWhitespaceGiven_ShouldBeFalse() {
-        assertThat(WsvString.isWhitespace(null)).isFalse()
-        assertThat(WsvString.isWhitespace("")).isFalse()
-        assertThat(WsvString.isWhitespace(" a ")).isFalse()
-        assertThat(WsvString.isWhitespace("\n")).isFalse()
+        assertThat(null.isWhitespace()).isFalse()
+        assertThat("".isWhitespace()).isFalse()
+        assertThat(" a ".isWhitespace()).isFalse()
+        assertThat("\n".isWhitespace()).isFalse()
     }
 }

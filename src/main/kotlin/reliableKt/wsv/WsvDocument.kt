@@ -32,7 +32,7 @@ class WsvDocument @JvmOverloads constructor(var encoding: ReliableTxtEncoding = 
 
     fun toArray(): Array<Array<String?>> =
         Array(lines.size) { i ->
-            lines[i].values!!
+            lines[i].values
         }
 
     override fun toString(): String = toString(true)
@@ -50,12 +50,14 @@ class WsvDocument @JvmOverloads constructor(var encoding: ReliableTxtEncoding = 
     companion object {
         @JvmOverloads
         @Throws(IOException::class)
-        fun load(filePath: String, preserveWhitespaceAndComments: Boolean = true): WsvDocument {
-            val (text, encoding) = ReliableTxtDocument.load(filePath)
-            return parse(text, preserveWhitespaceAndComments).also { document ->
-                document.encoding = encoding
+        fun load(
+            filePath: String,
+            preserveWhitespaceAndComments: Boolean = true
+        ): WsvDocument =
+            ReliableTxtDocument.load(filePath).let { (text, encoding) ->
+                parse(text, preserveWhitespaceAndComments)
+                    .also { document -> document.encoding = encoding }
             }
-        }
 
         @JvmOverloads
         fun parse(content: String?, preserveWhitespaceAndComments: Boolean = true): WsvDocument =

@@ -24,10 +24,8 @@ open class ReliableTxtCharIterator(text: String) {
 
     fun isEndOfText(): Boolean = index >= chars.size
 
-    fun isChar(c: Int): Boolean = when {
-        isEndOfText() -> false
-        else -> chars[index] == c
-    }
+    fun isChar(c: Int): Boolean =
+        !isEndOfText() && chars[index] == c
 
     fun tryReadChar(c: Int): Boolean = when {
         !isChar(c) -> false
